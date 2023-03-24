@@ -19,6 +19,18 @@
         border: 1px solid #ccc;
         box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
       }
+      .container {
+        padding: 2rem;
+        display: grid;
+        place-items: left;
+      }
+      #colorInfo {
+        padding: 1rem 0;
+      }
+      .image {
+        max-width: 100%;
+        height: auto;
+      }
     </style>
   </head>
   <body>
@@ -35,6 +47,27 @@
     </div>
 
     <script>
+      // const fileInput = document.getElementById("fileInput");
+      // const canvas = document.getElementById("canvas");
+      // const ctx = canvas.getContext("2d", { willReadFrequently: true });
+
+      // let image;
+
+      // fileInput.addEventListener("change", function () {
+      //   const file = this.files[0];
+      //   const reader = new FileReader();
+      //   reader.onload = function () {
+      //     image = new Image();
+      //     image.src = reader.result;
+      //     image.onload = function () {
+      //       canvas.width = image.width;
+      //       canvas.height = image.height;
+      //       ctx.drawImage(image, 0, 0);
+      //     };
+      //   };
+      //   reader.readAsDataURL(file);
+      // });
+
       const fileInput = document.getElementById("fileInput");
       const canvas = document.getElementById("canvas");
       const ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -48,12 +81,23 @@
           image = new Image();
           image.src = reader.result;
           image.onload = function () {
-            canvas.width = image.width;
-            canvas.height = image.height;
-            ctx.drawImage(image, 0, 0);
+            drawImage();
           };
         };
         reader.readAsDataURL(file);
+      });
+
+      function drawImage() {
+        if (!image) return;
+        const parent = canvas.parentNode;
+        const canvasWidth = Math.min(parent.clientWidth, image.width);
+        canvas.width = canvasWidth;
+        canvas.height = image.height * (canvasWidth / image.width);
+        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+      }
+
+      window.addEventListener("resize", function () {
+        drawImage();
       });
 
       function rgbToHsl(r, g, b) {
