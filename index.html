@@ -29,6 +29,9 @@
         display: grid;
         place-items: left;
       }
+      #download-btn {
+        padding: 2px 4px;
+      }
       #colorInfo {
         --background-color: #eee;
         padding: 1rem 0;
@@ -61,6 +64,17 @@
         }
         #colorInfo {
           padding: 0 0 1rem 0;
+        }
+        #colorInfo::after {
+          content: "";
+          display: inline-block;
+          width: 1rem;
+          height: 1rem;
+          background-color: var(--background-color);
+          margin-left: calc(1rem / 2);
+          position: absolute;
+          top: 0;
+          transform: translateY(30%);
         }
       }
     </style>
