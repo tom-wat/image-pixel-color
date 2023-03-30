@@ -264,18 +264,40 @@
         download(filename, text);
       });
 
-      document.addEventListener("keydown", function (event) {
-        const colorInfoElement = document.getElementById("colorInfo");
-        if (!colorInfoElement.textContent) return;
-        if (event.key === "Enter") {
-          const filename = "output.txt";
+      const debounceLeading = (func, timeout = 300) => {
+        let timer; //タイマーID
+        return function (...args) {
+          // timer が true の場合は関数を呼び出さない
+          if (!timer) {
+            // timer が undefined（false）であれば関数を呼び出す
+            func.apply(this, args);
+          }
+          // タイマーをクリア
+          clearTimeout(timer);
+          // timer を更新（timer は正の整数なので true になる）
+          timer = setTimeout(() => {
+            // timeout 後に timer を undefined にするようにスケジュール
+            timer = undefined;
+          }, timeout);
+        };
+      };
+
+      document.addEventListener(
+        "keydown",
+        debounceLeading(function (event) {
           const colorInfoElement = document.getElementById("colorInfo");
-          let str = `${colorInfoElement.textContent}`;
-          str = str.replace(/,/g, "\n");
-          const text = `${str}`;
-          download(filename, text);
-        }
-      });
+          if (!colorInfoElement.textContent) return;
+          if (event.key === "Enter") {
+            const filename = "output.txt";
+            const colorInfoElement = document.getElementById("colorInfo");
+            let str = `${colorInfoElement.textContent}`;
+            str = str.replace(/,/g, "\n");
+            const text = `${str}`;
+            download(filename, text);
+          }
+        }),
+        1000
+      );
 
       // マウス移動時に実行する関数
       function showTooltip(event) {
