@@ -10,7 +10,7 @@
       *::after {
         margin: 0;
         padding: 0;
-        box-sizing: border-box;
+        /* box-sizing: border-box; */
       }
       body {
         /* Light mode styles */
@@ -24,6 +24,18 @@
         font-family: inherit;
         font-size: calc(100% - 2px);
         outline-color: darkblue;
+      }
+      input {
+        display: block;
+      }
+      .container {
+        display: grid;
+        place-items: center;
+      }
+      .top {
+        display: grid;
+        gap: 1rem;
+        max-width: 800px;
       }
       #canvas {
         vertical-align: bottom;
@@ -47,7 +59,6 @@
       }
       #colorInfo {
         --background-color: #eee;
-        margin-top: 1rem;
         position: relative;
       }
       #colorInfo::after {
@@ -135,6 +146,7 @@
 
       const fileInput = document.getElementById("fileInput");
       const canvas = document.getElementById("canvas");
+      const container = document.querySelector(".container");
       const ctx = canvas.getContext("2d", { willReadFrequently: true });
 
       let image;
@@ -155,7 +167,10 @@
       function drawImage() {
         if (!image) return;
         const parent = canvas.parentNode;
-        const canvasWidth = Math.min(parent.clientWidth, image.width);
+        const canvasWidth = Math.min(
+          parseInt(window.getComputedStyle(container).width),
+          image.width
+        );
         canvas.width = canvasWidth;
         canvas.height = image.height * (canvasWidth / image.width);
         ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
