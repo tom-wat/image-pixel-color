@@ -299,14 +299,21 @@
       }
 
       const downloadBtn = document.getElementById("download-btn");
-      downloadBtn.addEventListener("click", function () {
-        const filename = "output.txt";
-        const colorInfoElement = document.getElementById("colorInfo");
-        let str = `${colorInfoElement.textContent}`;
-        str = str.replace(/,/g, "\n");
-        const text = `${str}`;
-        download(filename, text);
-      });
+      downloadBtn.addEventListener(
+        "click",
+        debounce(
+          function () {
+            const filename = "output.txt";
+            const colorInfoElement = document.getElementById("colorInfo");
+            let str = `${colorInfoElement.textContent}`;
+            str = str.replace(/,/g, "\n");
+            const text = `${str}`;
+            download(filename, text);
+          },
+          300,
+          true
+        )
+      );
 
       function debounce(func, delay, immediate) {
         let timerId;
