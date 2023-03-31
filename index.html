@@ -94,6 +94,7 @@
       @media (prefers-color-scheme: dark) {
         /* Dark mode styles */
         body {
+          border: white;
           background-color: #333;
           color: #fff;
         }
@@ -376,6 +377,23 @@
         // ツールチップに表示する文字列を設定
         const colorInfoElement = document.getElementById("colorInfo");
         tooltip.textContent = `${colorInfoElement.textContent}`;
+
+        // ウィンドウの幅とツールチップの幅を取得
+        const windowWidth = window.innerWidth;
+        const tooltipWidth = tooltip.offsetWidth;
+
+        // ツールチップがウィンドウの右端を超える場合は left 座標を調整
+        if (x + tooltipWidth + 10 > windowWidth) {
+          tooltip.style.left = x - tooltipWidth - 10 + "px";
+        }
+
+        // ツールチップの高さを取得
+        const tooltipHeight = tooltip.offsetHeight;
+
+        // ツールチップがウィンドウの下端を超える場合は top 座標を調整
+        if (y + tooltipHeight + 10 > window.innerHeight) {
+          tooltip.style.top = y - tooltipHeight - 10 + "px";
+        }
 
         // ツールチップを表示する
         tooltip.style.display = "block";
